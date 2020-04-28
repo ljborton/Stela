@@ -1,0 +1,28 @@
+--LOGIN (ONLY RECORDS iOS)
+SELECT 
+  EVENT,
+  UUID,
+  GUID,
+  EVENT_TIME,
+  PROCESS_TIME,
+  CITY,
+  COUNTRY,
+--  JSON_EXTRACT_PATH_TEXT(body,'datetime') AS JSON_TIME,
+  JSON_EXTRACT_PATH_TEXT(body,'manufacturer') AS MANUFACTURER, 
+  JSON_EXTRACT_PATH_TEXT(body,'os_name') AS OS_NAME,
+  JSON_EXTRACT_PATH_TEXT(body,'model_id') AS MODEL_ID,
+--  JSON_EXTRACT_PATH_TEXT(body,'device_id') AS DEVICE_ID,
+  JSON_EXTRACT_PATH_TEXT(body,'os_version') AS OS_VERSION,
+--  JSON_EXTRACT_PATH_TEXT(body,'screen_height') AS SCREEN_HEIGHT,
+--  JSON_EXTRACT_PATH_TEXT(body,'screen_width') AS SCREEN_WIDTH,
+  JSON_EXTRACT_PATH_TEXT(body,'cellular_provider') AS CELLULAR_PROVIDER,
+--  JSON_EXTRACT_PATH_TEXT(body,'push_token') AS PUSH_TOKEN,
+--  JSON_EXTRACT_PATH_TEXT(body,'advertising_id') AS ADVERTISING_ID,
+--  JSON_EXTRACT_PATH_TEXT(body,'source_ip') AS SOURCE_IP,
+-- JSON_EXTRACT_PATH_TEXT(body,'user_agent') AS USER_AGENT,
+  split_part(split_part(JSON_EXTRACT_PATH_TEXT(body,'user_agent'),'-',3),'/',1) as OS
+FROM trackings 
+WHERE  
+event = 'login' and event_time > '2019-08-06 17:00:00'
+ORDER BY EVENT_TIME asc
+

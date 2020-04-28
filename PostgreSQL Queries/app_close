@@ -1,0 +1,18 @@
+--APP_CLOSE
+SELECT 
+  EVENT,
+  UUID,
+  GUID,
+  CITY,
+  COUNTRY,
+  event_time,
+  process_time,
+  JSON_EXTRACT_PATH_TEXT(body,'datetime') AS JSON_TIME,
+  JSON_EXTRACT_PATH_TEXT(body,'source_ip') AS SOURCE_IP,
+  JSON_EXTRACT_PATH_TEXT(body,'user_agent') AS USER_AGENT,
+  body
+FROM trackings 
+WHERE  
+event = 'app_close' 
+ORDER BY JSON_TIME DESC 
+

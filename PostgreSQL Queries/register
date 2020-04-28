@@ -1,0 +1,22 @@
+--REGISTER
+SELECT 
+--  EVENT,
+DISTINCT
+  UUID,
+--  GUID,
+  CITY,
+  COUNTRY,
+--  event_time,
+--  process_time,
+--  JSON_EXTRACT_PATH_TEXT(body,'nickname') AS NICKNAME,
+--  JSON_EXTRACT_PATH_TEXT(body,'source') AS SOURCE,
+ JSON_EXTRACT_PATH_TEXT(body,'email') AS EMAIL 
+--  JSON_EXTRACT_PATH_TEXT(body,'status') AS STATUS
+--  JSON_EXTRACT_PATH_TEXT(body,'datetime') AS JSON_TIME,
+--  JSON_EXTRACT_PATH_TEXT(body,'source_ip') AS SOURCE_IP,
+--  JSON_EXTRACT_PATH_TEXT(body,'user_agent') AS USER_AGENT
+FROM trackings 
+WHERE  
+event = 'register' 
+and EVENT_TIME > '2019-07-29 21:00:00'
+ORDER BY EVENT_TIME DESC 

@@ -1,0 +1,20 @@
+--CHAPTER_VIEW
+SELECT 
+  EVENT,
+  UUID,
+  GUID,
+  CITY,
+  COUNTRY,
+  event_time,
+  process_time,
+  JSON_EXTRACT_PATH_TEXT(body,'series_id') AS SERIES_ID,
+  JSON_EXTRACT_PATH_TEXT(body,'series_name') AS SERIES_NAME,
+  JSON_EXTRACT_PATH_TEXT(body,'chapter_id') AS CHAPTER_ID, 
+  JSON_EXTRACT_PATH_TEXT(body,'chapter_name') AS CHAPTER_Name,
+  JSON_EXTRACT_PATH_TEXT(body,'datetime') AS JSON_TIME,
+  JSON_EXTRACT_PATH_TEXT(body,'source_ip') AS SOURCE_IP,
+  JSON_EXTRACT_PATH_TEXT(body,'user_agent') AS USER_AGENT,
+FROM trackings 
+WHERE  
+event = 'chapter_view' 
+ORDER BY JSON_TIME DESC 

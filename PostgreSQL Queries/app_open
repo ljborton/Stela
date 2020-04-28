@@ -1,0 +1,19 @@
+--APP_OPEN
+SELECT 
+  EVENT,
+  UUID,
+  GUID,
+  CITY,
+  COUNTRY,
+  event_time,
+  process_time,
+  JSON_EXTRACT_PATH_TEXT(body,'app_build_number') AS APP_BUILD_NUMBER,
+  JSON_EXTRACT_PATH_TEXT(body,'app_version') AS APP_VERSION,
+  JSON_EXTRACT_PATH_TEXT(body,'app_name') AS APP_NAME,
+  JSON_EXTRACT_PATH_TEXT(body,'source_ip') AS SOURCE_IP,
+  JSON_EXTRACT_PATH_TEXT(body,'user_agent') AS USER_AGENT,
+  body
+FROM trackings 
+WHERE  
+event = 'app_open' 
+ORDER BY EVENT_TIME DESC 

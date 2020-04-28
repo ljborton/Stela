@@ -1,0 +1,21 @@
+--SERIES_VIEW
+SELECT 
+  EVENT,
+  UUID,
+  GUID,
+  CITY,
+  COUNTRY,
+  event_time,
+  process_time,
+  JSON_EXTRACT_PATH_TEXT(body,'series_id') AS SERIES_ID,
+  JSON_EXTRACT_PATH_TEXT(body,'series_name') AS SERIES_NAME,
+  JSON_EXTRACT_PATH_TEXT(body,'page_id') AS PAGE_ID, 
+  JSON_EXTRACT_PATH_TEXT(body,'page_name') AS PAGE_NAME,
+  JSON_EXTRACT_PATH_TEXT(body,'card_name') AS CARD_NAME,
+  JSON_EXTRACT_PATH_TEXT(body,'datetime') AS JSON_TIME,
+  JSON_EXTRACT_PATH_TEXT(body,'source_ip') AS SOURCE_IP,
+  JSON_EXTRACT_PATH_TEXT(body,'user_agent') AS USER_AGENT
+FROM trackings 
+WHERE  
+event = 'series_view' 
+ORDER BY JSON_TIME DESC 

@@ -1,0 +1,49 @@
+select * from
+-- series_likes
+(select distinct user_id, series_title as series,count('series_title')
+from series_like 
+where event_time > '2019-07-29 21:00:00' 
+group by user_id, series_title
+
+UNION ALL
+-- series_views
+select guid as user_id, JSON_EXTRACT_PATH_TEXT(body, 'series_name') as series, count (JSON_EXTRACT_PATH_TEXT(body, 'series_name')) as count
+from trackings
+where event_time > '2019-07-29 21:00:00' and 
+event = 'series_view'
+group by guid, JSON_EXTRACT_PATH_TEXT(body, 'series_name')
+
+UNION ALL
+-- chapter_views
+select guid as user_id, series_name as series, sum (chcounts) as count
+from
+ (select guid, JSON_EXTRACT_PATH_TEXT(body, 'series_name') as series_name, --JSON_EXTRACT_PATH_TEXT(body, 'chapter_name'), 
+ count(JSON_EXTRACT_PATH_TEXT(body, 'chapter_name')) as chcounts
+from trackings
+where event_time > '2019-07-29 21:00:00' and 
+event = 'chapter_view'
+group by guid, JSON_EXTRACT_PATH_TEXT(body, 'series_name'), JSON_EXTRACT_PATH_TEXT(body, 'chapter_name')
+order by guid, JSON_EXTRACT_PATH_TEXT(body, 'series_name'), JSON_EXTRACT_PATH_TEXT(body, 'chapter_name'))
+group by guid, series_name
+
+UNION ALL
+-- chapter_likes
+select user_id, series_title as series, count(series_title) as count
+from
+(select distinct user_id, series_title, chapter_title 
+from series_chapter_like 
+where event_time > '2019-07-29 21:00:00'
+group by user_id, series_title, chapter_title
+order by user_id, series_title)
+group by user_id, series_title
+
+UNION ALL
+-- browse categories
+select guid, JSON_EXTRACT_PATH_TEXT(body,'target'), count (JSON_EXTRACT_PATH_TEXT(body,'target')) as count
+from trackings 
+where 
+JSON_EXTRACT_PATH_TEXT(body,'target') like 'browse_%' and
+event_time > '2019-07-29 21:00:00' and 
+event = 'click' 
+group by guid, JSON_EXTRACT_PATH_TEXT(body,'target'))
+order by user_id, series

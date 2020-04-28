@@ -1,0 +1,20 @@
+--REGISTER
+SELECT 
+--  EVENT,
+  DISTINCT 
+  UUID,
+  CITY,
+  COUNTRY,
+  EVENT_TIME,
+ -- PROCESS_TIME,
+--  JSON_EXTRACT_PATH_TEXT(body,'nickname') AS NICKNAME,
+  JSON_EXTRACT_PATH_TEXT(body,'email') AS EMAIL, 
+  JSON_EXTRACT_PATH_TEXT(body,'status') AS STATUS,
+  JSON_EXTRACT_PATH_TEXT(body,'platform') AS PLATFORM,
+  JSON_EXTRACT_PATH_TEXT(body,'product') AS PRODUCT
+FROM trackings 
+WHERE  
+EVENT_TIME > '2019-07-29 21:00:00' and 
+EVENT = 'purchase' and
+STATUS = 'success' --and (product like '%2999' or product like '%3999' or product like '%1499') and 
+ORDER BY EVENT_TIME
